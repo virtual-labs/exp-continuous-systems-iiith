@@ -2,6 +2,12 @@ The continuous systems are more complex systems for doing their analysis. So for
 
 Equation of motion for a generalized SDOF system is,
 
+[image1](images/eq1.PNG)
+
+
 where,
+
+[image2](images/eq2.PNG)
+
 
 [Read More](doc/9.theory.pdf)
