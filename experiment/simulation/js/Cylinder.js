@@ -1,9 +1,22 @@
 //Your JavaScript goes in here
 
+function curvedArea(ctx, e1, e2, gradX, gradY)
+{
+	ctx.beginPath();
+	ctx.moveTo(e1[0], e1[1]);
+	ctx.bezierCurveTo(e1[0], e1[1] += gradY, e1[0] -= gradX, e1[1] += gradY, e1[0] -= gradX, e1[1]);
+	ctx.bezierCurveTo(e1[0] -= gradX, e1[1], e1[0] -= gradX, e1[1] -= gradY, e1[0], e1[1] -= gradY);
+	ctx.bezierCurveTo(e2[0], e2[1] -= gradY, e2[0] += gradX, e2[1] -= gradY, e2[0] += gradX, e2[1]);
+	ctx.bezierCurveTo(e2[0] += gradX, e2[1], e2[0] += gradX, e2[1] += gradY, e2[0], e2[1] += gradY);
+	ctx.closePath();
+	ctx.fill();
+	ctx.stroke();
+}
+
 document.addEventListener('DOMContentLoaded', function(){
 
-	var height = 340
-	var vibe = 30
+	var height = 390
+	var vibe = 40
 
 	var canvas = document.getElementById("cylinder");
 	canvas.width = 300;
@@ -13,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	fill = "#D3D3D3"
 	border = "black"
-	lineWidth = 2
+	lineWidth = 1.5
 
 	var speed = 100
 	var dirn = [-1, -1]
@@ -91,35 +104,19 @@ document.addEventListener('DOMContentLoaded', function(){
 		ctx.stroke();
 
 		// lower curved area
-		//var e1 = v[2].slice()
 		e1 = [...v[2]]
-		//var e2 = v[3].slice()
 		e2 = [...v[3]]
 		gradX = (e1[0] - e2[0]) / 4
 		gradY = 10
+		curvedArea(ctx, e1, e2, gradX, gradY)
 
-		ctx.beginPath();
-		ctx.moveTo(e1[0], e1[1]);
-		ctx.bezierCurveTo(e1[0], e1[1] += gradY, e1[0] -= gradX, e1[1] += gradY, e1[0] -= gradX, e1[1]);
-		ctx.bezierCurveTo(e1[0] -= gradX, e1[1], e1[0] -= gradX, e1[1] -= gradY, e1[0], e1[1] -= gradY);
-		ctx.bezierCurveTo(e2[0], e2[1] -= gradY, e2[0] += gradX, e2[1] -= gradY, e2[0] += gradX, e2[1]);
-		ctx.bezierCurveTo(e2[0] += gradX, e2[1], e2[0] += gradX, e2[1] += gradY, e2[0], e2[1] += gradY);
-		ctx.closePath();
-		ctx.fill();
-		ctx.stroke();
-
-		//ctx.fillStyle = "white";
-
-		//// layer1/Group/Path
-		//ctx.beginPath();
-		//ctx.moveTo(210, 30);
-		//ctx.bezierCurveTo(210, 40, 165, 50, 120, 50);
-		//ctx.bezierCurveTo(75, 50, 30, 40, 30, 30);
-		//ctx.bezierCurveTo(30, 20, 75, 10, 120, 10);
-		//ctx.bezierCurveTo(165, 10, 210, 20, 210, 30);
-		//ctx.closePath();
-		//ctx.fill();
-		//ctx.stroke();
+		// upper curved area
+		e1 = [...v[1]]
+		e2 = [...v[0]]
+		gradX = (e1[0] - e2[0]) / 4
+		gradY = 10
+		ctx.fillStyle = "white";
+		curvedArea(ctx, e1, e2, gradX, gradY)
 
 		setTimeout(drawCylinder, speed);
 	}
