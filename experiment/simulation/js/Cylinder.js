@@ -81,8 +81,6 @@ document.addEventListener('DOMContentLoaded', function(){
 		for(var i = 0; i < v.length; ++i)
 		{
 			next = (i + 1) % v.length
-			xchange = 0
-			ychange = 0
 			ctrl = v[next]
 			var ratio = 0.4
 			var ind = i

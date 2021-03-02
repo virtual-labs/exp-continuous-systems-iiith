@@ -70,20 +70,18 @@ document.addEventListener('DOMContentLoaded', function(){
 		for(var i = 0; i < v2.length; ++i)
 		{
 			next = (i + 1) % v2.length
-			xchange = 0
-			ychange = 0
 			ctrl = v2[next]
 			var ratio = 0.4
 			var ind = i
 
-			if(i == 1)
+			if(i == 3)
 			{
 				ratio = 1 - ratio
 				ind = next
 			}
 
 			if(i == 1 || i == 3)
-				ctrl = [v2[ind][0], (v2[i][1] + v2[next][1]) * ratio]
+				ctrl = [(v2[next][0] + v2[i][0]) * ratio, (v2[i][1] + v2[next][1]) * ratio]
 
 			ctx2.quadraticCurveTo(ctrl[0], ctrl[1], v2[next][0], v2[next][1]);
 		}
