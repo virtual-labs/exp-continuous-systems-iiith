@@ -1,55 +1,114 @@
 //Your JavaScript goes in here
-var canvas = document.getElementById("frustum");
-var ctx = canvas.getContext("2d");
-drawFrustum(canvas, ctx, "#C0C0C0", "black", 2);
 
-function drawFrustum(canvas, ctx, fill, border, lineWidth)
-{
-	canvas.width = 450;
-    canvas.height = 450;
-    ctx.translate(25,0);
-    ctx.fillStyle = fill;
-    ctx.lineWidth = lineWidth;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
+document.addEventListener('DOMContentLoaded', function(){
 
-    v = [[145, 30], [265, 30], [380, 370], [30, 370]]
+	var height2 = 390
+	var vibe2 = 30
 
-    ctx.beginPath();
-    ctx.moveTo(v[0][0], v[0][1]);
+	var canvas2 = document.getElementById("frustum");
+	canvas2.width = 450;
+	canvas2.height = 450;
+	canvas2.style = "border:1px solid"
+	var ctx2 = canvas2.getContext("2d");
 
-    for(var i = 0; i < v.length; ++i)
-    {
-        next = (i + 1) % v.length
-        ctx.lineTo(v[next][0], v[next][1])
-        continue
-    }
+	fill = "#D3D3D3"
+	border = "black"
+	lineWidth = 1.5
 
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-    
-    // layer1/Group/Path
-    ctx.beginPath();
-    ctx.moveTo(380, 370);
-    ctx.bezierCurveTo(380, 380, 292.5, 390, 205, 390);
-    ctx.bezierCurveTo(117.5, 390, 30, 380, 30, 370);
-    ctx.bezierCurveTo(30, 360, 117.5, 350, 205, 350);
-    ctx.bezierCurveTo(292.5, 350, 380, 360, 380, 370);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
+	var speed2 = 100
+	var dirn2 = [-1, -1]
+	var change2 = [5, 5]
+	var startL2 = 145
+	var startR2 = 265
+	v2 = [[startL2, 30], [startR2, 30], [380, 30 + height2], [30, 30 + height2]]
 
-    ctx.fillStyle = "white";
+	function drawFrustum()
+	{
+		ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+		ctx2.fillStyle = fill;
+		ctx2.lineWidth = lineWidth;
+		ctx2.lineCap = "round";
+		ctx2.lineJoin = "round";
 
-    // layer1/Group/Path
-    ctx.beginPath();
-    ctx.moveTo(265, 30);
-    ctx.bezierCurveTo(265, 40, 235, 50, 205, 50);
-    ctx.bezierCurveTo(175, 50, 145, 40, 145, 30);
-    ctx.bezierCurveTo(145, 20, 175, 10, 205, 10);
-    ctx.bezierCurveTo(235, 10, 265, 20, 265, 30);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-}
+		if(dirn2[0] == -1)
+		{
+			v2[0][0] -= change2[0]
+			v2[1][0] -= change2[0]
+		}
+
+		else
+		{
+			v2[0][0] += change2[0]
+			v2[1][0] += change2[0]
+		}
+
+
+		if(dirn2[1] == -1)
+		{
+			v2[0][1] += change2[1]
+			v2[1][1] += change2[1]
+		}
+
+		else
+		{
+			v2[0][1] -= change2[1]
+			v2[1][1] -= change2[1]
+		}
+
+		if(v2[0][0] <= startL2 - vibe2 || v2[1][0] >= startR2 + vibe2)
+		{
+			dirn2[0] *= -1
+			dirn2[1] *= -1
+		}
+
+		if(v2[0][1] <= 30 || v2[0][1] <= 30)
+			dirn2[1] *= -1
+
+		ctx2.beginPath();
+		ctx2.moveTo(v2[0][0], v2[0][1]);
+
+		for(var i = 0; i < v2.length; ++i)
+		{
+			next = (i + 1) % v2.length
+			xchange = 0
+			ychange = 0
+			ctrl = v2[next]
+			var ratio = 0.4
+			var ind = i
+
+			if(i == 1)
+			{
+				ratio = 1 - ratio
+				ind = next
+			}
+
+			if(i == 1 || i == 3)
+				ctrl = [v2[ind][0], (v2[i][1] + v2[next][1]) * ratio]
+
+			ctx2.quadraticCurveTo(ctrl[0], ctrl[1], v2[next][0], v2[next][1]);
+		}
+
+		ctx2.closePath();
+		ctx2.fill();
+		ctx2.stroke();
+
+		// lower curved area
+		e1 = [...v2[2]]
+		e2 = [...v2[3]]
+		gradX = (e1[0] - e2[0]) / 4
+		gradY = 10
+		curvedArea(ctx2, e1, e2, gradX, gradY)
+
+		// upper curved area
+		e1 = [...v2[1]]
+		e2 = [...v2[0]]
+		gradX = (e1[0] - e2[0]) / 4
+		gradY = 10
+		ctx2.fillStyle = "white";
+		curvedArea(ctx2, e1, e2, gradX, gradY)
+
+		setTimeout(drawFrustum, speed2);
+	}
+	
+	setTimeout(drawFrustum, speed2);
+})

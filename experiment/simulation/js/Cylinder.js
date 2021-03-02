@@ -16,7 +16,7 @@ function curvedArea(ctx, e1, e2, gradX, gradY)
 document.addEventListener('DOMContentLoaded', function(){
 
 	var height = 390
-	var vibe = 40
+	var vibe = 30
 
 	var canvas = document.getElementById("cylinder");
 	canvas.width = 300;
