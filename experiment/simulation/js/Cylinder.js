@@ -90,13 +90,20 @@ document.addEventListener('DOMContentLoaded', function(){
 		ctx.fill();
 		ctx.stroke();
 
-		// layer1/Group/Path
+		// lower curved area
+		//var e1 = v[2].slice()
+		e1 = [...v[2]]
+		//var e2 = v[3].slice()
+		e2 = [...v[3]]
+		gradX = (e1[0] - e2[0]) / 4
+		gradY = 10
+
 		ctx.beginPath();
-		ctx.moveTo(210, 370);
-		ctx.bezierCurveTo(210, 380, 165, 390, 120, 390);
-		ctx.bezierCurveTo(75, 390, 30, 380, 30, 370);
-		ctx.bezierCurveTo(30, 360, 75, 350, 120, 350);
-		ctx.bezierCurveTo(165, 350, 210, 360, 210, 370);
+		ctx.moveTo(e1[0], e1[1]);
+		ctx.bezierCurveTo(e1[0], e1[1] += gradY, e1[0] -= gradX, e1[1] += gradY, e1[0] -= gradX, e1[1]);
+		ctx.bezierCurveTo(e1[0] -= gradX, e1[1], e1[0] -= gradX, e1[1] -= gradY, e1[0], e1[1] -= gradY);
+		ctx.bezierCurveTo(e2[0], e2[1] -= gradY, e2[0] += gradX, e2[1] -= gradY, e2[0] += gradX, e2[1]);
+		ctx.bezierCurveTo(e2[0] += gradX, e2[1], e2[0] += gradX, e2[1] += gradY, e2[0], e2[1] += gradY);
 		ctx.closePath();
 		ctx.fill();
 		ctx.stroke();
