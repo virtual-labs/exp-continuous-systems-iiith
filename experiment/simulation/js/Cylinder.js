@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', function(){
 
 	var height = 340
-	var vibe = 20
+	var vibe = 30
 
 	var canvas = document.getElementById("cylinder");
 	canvas.width = 300;
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	border = "black"
 	lineWidth = 2
 
-	var speed = 500
+	var speed = 100
 	var dirn = [-1, -1]
 	var change = [5, 5]
 	v = [[30, 30], [210, 30], [210, 30 + height], [30, 30 + height]]
@@ -91,15 +91,15 @@ document.addEventListener('DOMContentLoaded', function(){
 		ctx.stroke();
 
 		// layer1/Group/Path
-		//ctx.beginPath();
-		//ctx.moveTo(210, 370);
-		//ctx.bezierCurveTo(210, 380, 165, 390, 120, 390);
-		//ctx.bezierCurveTo(75, 390, 30, 380, 30, 370);
-		//ctx.bezierCurveTo(30, 360, 75, 350, 120, 350);
-		//ctx.bezierCurveTo(165, 350, 210, 360, 210, 370);
-		//ctx.closePath();
-		//ctx.fill();
-		//ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(210, 370);
+		ctx.bezierCurveTo(210, 380, 165, 390, 120, 390);
+		ctx.bezierCurveTo(75, 390, 30, 380, 30, 370);
+		ctx.bezierCurveTo(30, 360, 75, 350, 120, 350);
+		ctx.bezierCurveTo(165, 350, 210, 360, 210, 370);
+		ctx.closePath();
+		ctx.fill();
+		ctx.stroke();
 
 		//ctx.fillStyle = "white";
 
