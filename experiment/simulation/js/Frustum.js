@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	let vibe2 = 30
 
 	const canvas2 = document.getElementById("frustum");
-	canvas2.width = 450;
+	canvas2.width = 400;
 	canvas2.height = 450;
 	canvas2.style = "border:1px solid"
 	const ctx2 = canvas2.getContext("2d");
@@ -15,12 +15,12 @@ document.addEventListener('DOMContentLoaded', function(){
 	border = "black"
 	lineWidth = 1.5
 
-	const speed2 = 100
+	const fps2 = 10
 	const change2 = [5, 5]
 	let dirn2 = [-1, -1]
 	
 	const startL2 = 30
-	const startR2 = 380
+	const startR2 = 350
 	const upL = startL2 + (startR2 - startL2) / 3
 	const upR = startR2 - (startR2 - startL2) / 3
 	let v2 = [[upL, 30], [upR, 30], [startR2, 30 + height2], [startL2, 30 + height2]]
@@ -108,8 +108,8 @@ document.addEventListener('DOMContentLoaded', function(){
 		ctx2.fillStyle = "white";
 		curvedArea(ctx2, e1, e2, gradX, gradY)
 
-		setTimeout(drawFrustum, speed2);
+		setTimeout(drawFrustum, 1000 / fps2);
 	}
 	
-	setTimeout(drawFrustum, speed2);
+	setTimeout(drawFrustum, 1000 / fps2);
 })

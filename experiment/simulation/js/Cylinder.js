@@ -28,11 +28,11 @@ document.addEventListener('DOMContentLoaded', function(){
 	border = "black"
 	lineWidth = 1.5
 
-	const speed = 100
+	const fps = 10
 	const change = [5, 5]
 	let dirn = [-1, -1]
 
-	const startL = 30
+	const startL = 60
 	const startR = 210
 	let v = [[startL, 30], [startR, 30], [startR, 30 + height], [startL, 30 + height]]
 
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			v[1][1] -= change[1]
 		}
 
-		if(v[0][0] <= 30 - vibe || v[1][0] >= 210 + vibe)
+		if(v[0][0] <= startL - vibe || v[1][0] >= startR + vibe)
 		{
 			dirn[0] *= -1
 			dirn[1] *= -1
@@ -119,9 +119,9 @@ document.addEventListener('DOMContentLoaded', function(){
 		ctx.fillStyle = "white";
 		curvedArea(ctx, e1, e2, gradX, gradY)
 
-		setTimeout(drawCylinder, speed);
+		setTimeout(drawCylinder, 1000 / fps);
 	}
 
-	setTimeout(drawCylinder, speed);
+	setTimeout(drawCylinder, 1000 / fps);
 	//requestAnimationFrame(drawCylinder);
 })
