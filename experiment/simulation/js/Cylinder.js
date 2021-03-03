@@ -15,23 +15,26 @@ function curvedArea(ctx, e1, e2, gradX, gradY)
 
 document.addEventListener('DOMContentLoaded', function(){
 
-	var height = 390
-	var vibe = 30
+	let height = 390
+	let vibe = 30
 
-	var canvas = document.getElementById("cylinder");
+	const canvas = document.getElementById("cylinder");
 	canvas.width = 300;
 	canvas.height = 450;
 	canvas.style = "border:1px solid"
-	var ctx = canvas.getContext("2d");
+	const ctx = canvas.getContext("2d");
 
 	fill = "#D3D3D3"
 	border = "black"
 	lineWidth = 1.5
 
-	var speed = 100
-	var dirn = [-1, -1]
-	var change = [5, 5]
-	v = [[30, 30], [210, 30], [210, 30 + height], [30, 30 + height]]
+	const speed = 100
+	const change = [5, 5]
+	let dirn = [-1, -1]
+
+	const startL = 30
+	const startR = 210
+	let v = [[startL, 30], [startR, 30], [startR, 30 + height], [startL, 30 + height]]
 
 	function drawCylinder()
 	{
@@ -78,12 +81,12 @@ document.addEventListener('DOMContentLoaded', function(){
 		ctx.beginPath();
 		ctx.moveTo(v[0][0], v[0][1]);
 
-		for(var i = 0; i < v.length; ++i)
+		for(let i = 0; i < v.length; ++i)
 		{
-			next = (i + 1) % v.length
-			ctrl = v[next]
-			var ratio = 0.4
-			var ind = i
+			let next = (i + 1) % v.length
+			let ctrl = v[next]
+			let ratio = 0.4
+			let ind = i
 
 			if(i == 1)
 			{
@@ -102,10 +105,10 @@ document.addEventListener('DOMContentLoaded', function(){
 		ctx.stroke();
 
 		// lower curved area
-		e1 = [...v[2]]
-		e2 = [...v[3]]
-		gradX = (e1[0] - e2[0]) / 4
-		gradY = 10
+		let e1 = [...v[2]]
+		let e2 = [...v[3]]
+		let gradX = (e1[0] - e2[0]) / 4
+		let gradY = 10
 		curvedArea(ctx, e1, e2, gradX, gradY)
 
 		// upper curved area

@@ -2,25 +2,28 @@
 
 document.addEventListener('DOMContentLoaded', function(){
 
-	var height2 = 390
-	var vibe2 = 30
+	let height2 = 390
+	let vibe2 = 30
 
-	var canvas2 = document.getElementById("frustum");
+	const canvas2 = document.getElementById("frustum");
 	canvas2.width = 450;
 	canvas2.height = 450;
 	canvas2.style = "border:1px solid"
-	var ctx2 = canvas2.getContext("2d");
+	const ctx2 = canvas2.getContext("2d");
 
 	fill = "#D3D3D3"
 	border = "black"
 	lineWidth = 1.5
 
-	var speed2 = 100
-	var dirn2 = [-1, -1]
-	var change2 = [5, 5]
-	var startL2 = 145
-	var startR2 = 265
-	v2 = [[startL2, 30], [startR2, 30], [380, 30 + height2], [30, 30 + height2]]
+	const speed2 = 100
+	const change2 = [5, 5]
+	let dirn2 = [-1, -1]
+	
+	const startL2 = 30
+	const startR2 = 380
+	const upL = startL2 + (startR2 - startL2) / 3
+	const upR = startR2 - (startR2 - startL2) / 3
+	let v2 = [[upL, 30], [upR, 30], [startR2, 30 + height2], [startL2, 30 + height2]]
 
 	function drawFrustum()
 	{
@@ -55,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			v2[1][1] -= change2[1]
 		}
 
-		if(v2[0][0] <= startL2 - vibe2 || v2[1][0] >= startR2 + vibe2)
+		if(v2[0][0] <= upL - vibe2 || v2[1][0] >= upR + vibe2)
 		{
 			dirn2[0] *= -1
 			dirn2[1] *= -1
@@ -67,12 +70,12 @@ document.addEventListener('DOMContentLoaded', function(){
 		ctx2.beginPath();
 		ctx2.moveTo(v2[0][0], v2[0][1]);
 
-		for(var i = 0; i < v2.length; ++i)
+		for(let i = 0; i < v2.length; ++i)
 		{
-			next = (i + 1) % v2.length
-			ctrl = v2[next]
-			var ratio = 0.4
-			var ind = i
+			let next = (i + 1) % v2.length
+			let ctrl = v2[next]
+			let ratio = 0.4
+			let ind = i
 
 			if(i == 3)
 			{
@@ -91,10 +94,10 @@ document.addEventListener('DOMContentLoaded', function(){
 		ctx2.stroke();
 
 		// lower curved area
-		e1 = [...v2[2]]
-		e2 = [...v2[3]]
-		gradX = (e1[0] - e2[0]) / 4
-		gradY = 10
+		let e1 = [...v2[2]]
+		let e2 = [...v2[3]]
+		let gradX = (e1[0] - e2[0]) / 4
+		let gradY = 10
 		curvedArea(ctx2, e1, e2, gradX, gradY)
 
 		// upper curved area
