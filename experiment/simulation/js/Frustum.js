@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		{
 			let next = (i + 1) % v2.length
 			let ctrl = v2[next]
-			let ratio = 0.4
+			let ratio = 0.5
 			let ind = i
 
 			if(i == 3)
