@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	const canvas = document.getElementById("main");
 	canvas.width = 1200;
 	canvas.height = 600;
-	canvas.style = "border:1px solid"
+	canvas.style = "border:3px solid"
 	const ctx = canvas.getContext("2d");
 
 	fill = "#D3D3D3"
