@@ -2,6 +2,23 @@
 
 document.addEventListener('DOMContentLoaded', function(){
 
+	var play = true
+
+	var playButton = document.getElementById('play');
+	var pauseButton = document.getElementById('pause');
+	var restartButton = document.getElementById('restart');
+
+	pauseButton.addEventListener('click', function() { window.clearTimeout(tmHandle) });
+	playButton.addEventListener('click', function() {  window.clearTimeout(tmHandle); tmHandle = setTimeout(draw, 1000 / fps); });
+	restartButton.addEventListener('click', function() { 
+		window.clearTimeout(tmHandle) 
+		bldg = {...defBldg}; 
+		ground = {...defGround};
+		layer2 = {...defLayer2};
+		dirn = -1;
+		tmHandle = window.setTimeout(draw, 1000 / fps); 
+	});
+
 	function curvedArea(ctx, e, gradX, gradY)
 	{
 		ctx.bezierCurveTo(e[0], e[1] += gradY, e[0] += gradX, e[1] += gradY, e[0] += gradX, e[1]);
@@ -35,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		ctx.restore()
 	}
 
-	let height = 390
+	let height = 400
 	let vibe = 30
 
 	const canvas = document.getElementById("main");
@@ -48,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	border = "black"
 	lineWidth = 1.5
 
-	const fps = 10
+	const fps = 15
 	let dirn = -1
 	let scale = 5
 
@@ -69,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		[[upL[1], defY], [upR[1], defY], [startR[1], defY + height], [startL[1], defY + height]],
 		[[upL[2], defY], [upR[2], defY], [startR[2], defY + height], [startL[2], defY + height]]
 	]
+
 	let ground = [
 		[startL[0] - vibe - 15, defY + height + 40],
 		[startL[0] - vibe + 15, defY + height - 40],
@@ -85,7 +103,11 @@ document.addEventListener('DOMContentLoaded', function(){
 		{...ground[3]},
 	]
 
-	async function draw()
+	const defBldg = {...bldg}
+	const defGround = {...ground}
+	const defLayer2 = {...layer2}
+
+	function draw()
 	{
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = fill;
@@ -98,8 +120,8 @@ document.addEventListener('DOMContentLoaded', function(){
 		else
 			updateGround(ground, layer2, -1 * vibe / scale)
 
-		await drawGround(ctx, ground)
-		await drawGround(ctx, layer2)
+		drawGround(ctx, ground)
+		drawGround(ctx, layer2)
 
 		for(let k = 0; k < 3; ++k)
 		{
@@ -195,9 +217,9 @@ document.addEventListener('DOMContentLoaded', function(){
 			bldg[k] = v
 		}
 
-		setTimeout(draw, 1000 / fps);
+		tmHandle = window.setTimeout(draw, 1000 / fps);
 	}
 
-	setTimeout(draw, 1000 / fps);
+	var tmHandle = window.setTimeout(draw, 1000 / fps);
 	//requestAnimationFrame(drawCylinder);
 })
