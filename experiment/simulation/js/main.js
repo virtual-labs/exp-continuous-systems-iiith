@@ -1,1 +1,203 @@
 //Your JavaScript goes in here
+
+document.addEventListener('DOMContentLoaded', function(){
+
+	function curvedArea(ctx, e, gradX, gradY)
+	{
+		ctx.bezierCurveTo(e[0], e[1] += gradY, e[0] += gradX, e[1] += gradY, e[0] += gradX, e[1]);
+		ctx.bezierCurveTo(e[0] += gradX, e[1], e[0] += gradX, e[1] -= gradY, e[0], e[1] -= gradY);
+	}
+
+	function updateGround(ground, layer2, chg)
+	{
+		for(let i = 0; i < ground.length; ++i)
+			ground[i][0] += chg
+		for(let i = 0; i < layer2.length; ++i)
+			layer2[i][0] += chg
+	}
+
+	function drawGround(ctx, ground)
+	{
+		ctx.save()
+		ctx.fillStyle = "pink";
+		ctx.beginPath();
+		ctx.moveTo(ground[0][0], ground[0][1]);
+
+		for(let i = 0; i < ground.length; ++i)
+		{
+			let next = (i + 1) % ground.length
+			ctx.lineTo(ground[next][0], ground[next][1])
+		}
+
+		ctx.closePath();
+		ctx.fill();
+		ctx.stroke();
+		ctx.restore()
+	}
+
+	let height = 390
+	let vibe = 30
+
+	const canvas = document.getElementById("main");
+	canvas.width = 1200;
+	canvas.height = 600;
+	canvas.style = "border:1px solid"
+	const ctx = canvas.getContext("2d");
+
+	fill = "#D3D3D3"
+	border = "black"
+	lineWidth = 1.5
+
+	const fps = 10
+	let dirn = -1
+	let scale = 5
+
+	let defY = 100
+	let startL = [100, 350, 700]
+	let startR = [250, 650, 1000]
+
+	let upL = {...startL}
+	let upR = {...startR}
+	upL[1] = startL[1] + (startR[1] - startL[1]) / 3
+	upR[1] = startR[1] - (startR[1] - startL[1]) / 3
+	upL[2] = startL[2] + (startR[2] - startL[2]) / 3
+	upR[2] = startR[2] - (startR[2] - startL[2]) / 3
+	let thickness = 10
+
+	let bldg = [
+		[[upL[0], defY], [upR[0], defY], [startR[0], defY + height], [startL[0], defY + height]],
+		[[upL[1], defY], [upR[1], defY], [startR[1], defY + height], [startL[1], defY + height]],
+		[[upL[2], defY], [upR[2], defY], [startR[2], defY + height], [startL[2], defY + height]]
+	]
+	let ground = [
+		[startL[0] - vibe - 15, defY + height + 40],
+		[startL[0] - vibe + 15, defY + height - 40],
+		[startR[2] + vibe + 30, defY + height - 40],
+		[startR[2] + vibe, defY + height + 40],
+	]
+	
+	let layer2 = [
+		{...ground[0]},
+		[startL[0] - vibe - 15, defY + height + 40 + thickness],
+		[startR[2] + vibe + thickness, defY + height + 40 + thickness],
+		[startR[2] + vibe + 30 + thickness, defY + height - 40 + thickness],
+		{...ground[2]},
+		{...ground[3]},
+	]
+
+	async function draw()
+	{
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.fillStyle = fill;
+		ctx.lineWidth = lineWidth;
+		ctx.lineCap = "round";
+		ctx.lineJoin = "round";
+
+		if(dirn == -1)
+			updateGround(ground, layer2, vibe / scale)
+		else
+			updateGround(ground, layer2, -1 * vibe / scale)
+
+		await drawGround(ctx, ground)
+		await drawGround(ctx, layer2)
+
+		for(let k = 0; k < 3; ++k)
+		{
+			let v = bldg[k]
+
+			if(dirn == -1)
+			{
+				v[0][0] -= vibe / scale
+				v[1][0] -= vibe / scale
+				v[2][0] += vibe / scale
+				v[3][0] += vibe / scale
+			}
+
+			else
+			{
+				v[0][0] += vibe / scale
+				v[1][0] += vibe / scale
+				v[2][0] -= vibe / scale
+				v[3][0] -= vibe / scale
+			}
+
+			if(k == 2 && (v[0][0] <= upL[k] - vibe || v[1][0] >= upR[k] + vibe))
+				dirn *= -1
+
+			ctx.beginPath();
+			ctx.moveTo(v[0][0], v[0][1]);
+
+			for(let i = 0; i < v.length; ++i)
+			{
+				let next = (i + 1) % v.length
+				let ctrl = v[next]
+				let ratio = 0.475
+				let ind = i
+				let e1 = [...v[i]]
+				let e2 = [...v[next]]
+				let gradX = (e1[0] - e2[0]) / -4
+				let gradY = 10
+
+				if(i == 0 || i == 2)
+				{
+					curvedArea(ctx, e1, gradX, gradY)
+					continue
+				}
+
+				if(k == 1)
+					ratio = 0.5
+
+				if(k == 0 && i == 1)
+				{
+					ratio = 1 - ratio
+					ind = next
+				}
+
+				if((k == 1 || k == 2) && i == 3)
+				{
+					ratio = 1 - ratio
+					ind = next
+				}
+
+				if(i == 1 || i == 3)
+				{
+					ctrl = [v[ind][0], (v[i][1] + v[next][1]) * ratio]
+					if(k)
+						ctrl = [(v[next][0] + v[i][0]) * ratio, (v[i][1] + v[next][1]) * ratio]
+
+				}
+
+				ctx.quadraticCurveTo(ctrl[0], ctrl[1], v[next][0], v[next][1]);
+			}
+
+			ctx.closePath();
+			ctx.fill();
+			ctx.stroke();
+
+			// upper curved area
+			ctx.save()
+			ctx.fillStyle = "white";
+			e1 = [...v[1]]
+			e2 = [...v[0]]
+			gradX = (e1[0] - e2[0]) / -4
+			gradY = 10
+
+			ctx.beginPath();
+			ctx.moveTo(e2[0], e2[1]);
+			curvedArea(ctx, e2, -1 * gradX, -1 * gradY)
+			curvedArea(ctx, e1, gradX, gradY)
+			ctx.closePath();
+
+			ctx.fill();
+			ctx.stroke();
+			ctx.restore();
+
+			bldg[k] = v
+		}
+
+		setTimeout(draw, 1000 / fps);
+	}
+
+	setTimeout(draw, 1000 / fps);
+	//requestAnimationFrame(drawCylinder);
+})
