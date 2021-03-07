@@ -23,14 +23,14 @@ document.addEventListener('DOMContentLoaded', function(){
 			[[upL[2], defY], [upR[2], defY], [startR[2], defY + height], [startL[2], defY + height]]
 		]
 
-		let ground = [
+		ground = [
 			[startL[0] - 50, defY + height + 40],
 			[startL[0], defY + height - 40],
 			[startR[2] + 50, defY + height - 40],
 			[startR[2], defY + height + 40],
 		]
 
-		let layer2 = [
+		layer2 = [
 			{...ground[0]},
 			[ground[0][0], defY + height + 40 + thickness],
 			[startR[2] + thickness, defY + height + 40 + thickness],
