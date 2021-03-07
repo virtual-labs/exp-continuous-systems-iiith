@@ -7,16 +7,64 @@ document.addEventListener('DOMContentLoaded', function(){
 	var playButton = document.getElementById('play');
 	var pauseButton = document.getElementById('pause');
 	var restartButton = document.getElementById('restart');
+	var submitButton = document.getElementById('submit');
 
 	pauseButton.addEventListener('click', function() { window.clearTimeout(tmHandle) });
 	playButton.addEventListener('click', function() {  window.clearTimeout(tmHandle); tmHandle = setTimeout(draw, 1000 / fps); });
-	restartButton.addEventListener('click', function() { 
+	restartButton.addEventListener('click', function() {restart()})
+
+	function restart() 
+	{ 
 		window.clearTimeout(tmHandle) 
-		bldg = {...defBldg}; 
-		ground = {...defGround};
-		layer2 = {...defLayer2};
+
+		bldg = [
+			[[upL[0], defY], [upR[0], defY], [startR[0], defY + height], [startL[0], defY + height]],
+			[[upL[1], defY], [upR[1], defY], [startR[1], defY + height], [startL[1], defY + height]],
+			[[upL[2], defY], [upR[2], defY], [startR[2], defY + height], [startL[2], defY + height]]
+		]
+
+		ground = [
+			[startL[0] - vibe - 15, defY + height + 40],
+			[startL[0] - vibe + 15, defY + height - 40],
+			[startR[2] + vibe + 30, defY + height - 40],
+			[startR[2] + vibe, defY + height + 40],
+		]
+
+		layer2 = [
+			{...ground[0]},
+			[startL[0] - vibe - 15, defY + height + 40 + thickness],
+			[startR[2] + vibe + thickness, defY + height + 40 + thickness],
+			[startR[2] + vibe + 30 + thickness, defY + height - 40 + thickness],
+			{...ground[2]},
+			{...ground[3]},
+		]
+
 		dirn = -1;
 		tmHandle = window.setTimeout(draw, 1000 / fps); 
+	}
+
+	var slider_hei = document.getElementById("height");
+	var output_hei = document.getElementById("demo_height");
+	output_hei.innerHTML = slider_hei.value; // Display the default slider value
+
+	// Update the current slider value (each time you drag the slider handle)
+	slider_hei.oninput = function() {
+		output_hei.innerHTML = this.value;
+	}
+
+	var slider_mot = document.getElementById("motion");
+	var output_mot = document.getElementById("demo_motion");
+	output_mot.innerHTML = slider_mot.value; // Display the default slider value
+
+	// Update the current slider value (each time you drag the slider handle)
+	slider_mot.oninput = function() {
+		output_mot.innerHTML = this.value;
+	}
+
+	submitButton.addEventListener('click', function() {
+		height = document.getElementById("height").value
+		vibe = document.getElementById("motion").value
+		restart()
 	});
 
 	function curvedArea(ctx, e, gradX, gradY)
