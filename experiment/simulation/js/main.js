@@ -23,18 +23,18 @@ document.addEventListener('DOMContentLoaded', function(){
 			[[upL[2], defY], [upR[2], defY], [startR[2], defY + height], [startL[2], defY + height]]
 		]
 
-		ground = [
-			[startL[0] - vibe - 15, defY + height + 40],
-			[startL[0] - vibe + 15, defY + height - 40],
-			[startR[2] + vibe + 30, defY + height - 40],
-			[startR[2] + vibe, defY + height + 40],
+		let ground = [
+			[startL[0] - 50, defY + height + 40],
+			[startL[0], defY + height - 40],
+			[startR[2] + 50, defY + height - 40],
+			[startR[2], defY + height + 40],
 		]
 
-		layer2 = [
+		let layer2 = [
 			{...ground[0]},
-			[startL[0] - vibe - 15, defY + height + 40 + thickness],
-			[startR[2] + vibe + thickness, defY + height + 40 + thickness],
-			[startR[2] + vibe + 30 + thickness, defY + height - 40 + thickness],
+			[ground[0][0], defY + height + 40 + thickness],
+			[startR[2] + thickness, defY + height + 40 + thickness],
+			[ground[2][0] + thickness, defY + height - 40 + thickness],
 			{...ground[2]},
 			{...ground[3]},
 		]
@@ -62,8 +62,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 
 	submitButton.addEventListener('click', function() {
-		height = document.getElementById("height").value
-		vibe = document.getElementById("motion").value
+		height = Number(document.getElementById("height").value)
+		vibe = Number(document.getElementById("motion").value)
 		restart()
 	});
 
@@ -118,8 +118,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	let scale = 5
 
 	let defY = 100
-	let startL = [100, 350, 700]
-	let startR = [250, 650, 1000]
+	let startL = [120, 370, 770]
+	let startR = [270, 670, 1070]
 
 	let upL = {...startL}
 	let upR = {...startR}
@@ -136,24 +136,20 @@ document.addEventListener('DOMContentLoaded', function(){
 	]
 
 	let ground = [
-		[startL[0] - vibe - 15, defY + height + 40],
-		[startL[0] - vibe + 15, defY + height - 40],
-		[startR[2] + vibe + 30, defY + height - 40],
-		[startR[2] + vibe, defY + height + 40],
+		[startL[0] - 50, defY + height + 40],
+		[startL[0], defY + height - 40],
+		[startR[2] + 50, defY + height - 40],
+		[startR[2], defY + height + 40],
 	]
 	
 	let layer2 = [
 		{...ground[0]},
-		[startL[0] - vibe - 15, defY + height + 40 + thickness],
-		[startR[2] + vibe + thickness, defY + height + 40 + thickness],
-		[startR[2] + vibe + 30 + thickness, defY + height - 40 + thickness],
+		[ground[0][0], defY + height + 40 + thickness],
+		[startR[2] + thickness, defY + height + 40 + thickness],
+		[ground[2][0] + thickness, defY + height - 40 + thickness],
 		{...ground[2]},
 		{...ground[3]},
 	]
-
-	const defBldg = {...bldg}
-	const defGround = {...ground}
-	const defLayer2 = {...layer2}
 
 	function draw()
 	{
@@ -269,5 +265,4 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 
 	var tmHandle = window.setTimeout(draw, 1000 / fps);
-	//requestAnimationFrame(drawCylinder);
 })
