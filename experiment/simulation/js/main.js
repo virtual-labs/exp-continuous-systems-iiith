@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	function drawGround(ctx, ground)
 	{
 		ctx.save()
-		ctx.fillStyle = "pink";
+		ctx.fillStyle = "#A4C652";
 		ctx.beginPath();
 		ctx.moveTo(ground[0][0], ground[0][1]);
 
@@ -106,10 +106,10 @@ document.addEventListener('DOMContentLoaded', function(){
 	const canvas = document.getElementById("main");
 	canvas.width = 1200;
 	canvas.height = 600;
-	canvas.style = "border:3px solid"
+	//canvas.style = "border:3px solid"
 	const ctx = canvas.getContext("2d");
 
-	fill = "#D3D3D3"
+	fill = "#A9A9A9"
 	border = "black"
 	lineWidth = 1.5
 
