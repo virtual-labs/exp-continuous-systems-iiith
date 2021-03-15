@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	canvas.style = "border:3px solid"
 	const ctx = canvas.getContext("2d");
 
-	fill = "#D3D3D3"
+	fill = "#A9A9A9"
 	border = "black"
 	lineWidth = 1.5
 
