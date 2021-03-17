@@ -1,0 +1,3 @@
+- Watanabe, T., Forced vibration of continuous system with nonlinear boundary conditions , ASME Journal of Mechanical Design 100, 1978, 487 491
+- Dynamics of structures by Anil K chopra.
+- Aoki, S. and Watanabe, T., Forced vibration of continuous system with unsymmetrical hysteresis loop characteristics , in Proceedings of Asia-Pacific Vibration Conference 93, Vol. 4, Japan Society of Mechanical Engineers, 1993, pp. 1680 1685.
