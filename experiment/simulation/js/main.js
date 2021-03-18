@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function(){
 	const playButton = document.getElementById('play');
 	const pauseButton = document.getElementById('pause');
 	const restartButton = document.getElementById('restart');
-	const submitButton = document.getElementById('submit');
 
 	pauseButton.addEventListener('click', function() { window.clearTimeout(tmHandle); });
 	playButton.addEventListener('click', function() {  window.clearTimeout(tmHandle); tmHandle = setTimeout(draw, 1000 / fps); });
@@ -48,6 +47,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	// Update the current slider value (each time you drag the slider handle)
 	slider_hei.oninput = function() {
 		output_hei.innerHTML = this.value;
+		height = Number(document.getElementById("height").value);
+		restart();
 	};
 
 	const slider_mot = document.getElementById("motion");
@@ -57,13 +58,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	// Update the current slider value (each time you drag the slider handle)
 	slider_mot.oninput = function() {
 		output_mot.innerHTML = this.value;
-	};
-
-	submitButton.addEventListener('click', function() {
-		height = Number(document.getElementById("height").value);
 		vibe = Number(document.getElementById("motion").value);
 		restart();
-	});
+	};
 
 	function curvedArea(ctx, e, gradX, gradY)
 	{
@@ -91,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 		for(let i = 0; i < ground.length; ++i)
 		{
-			const next = (i + 1) % ground.length;
+			let next = (i + 1) % ground.length;
 			ctx.lineTo(ground[next][0], ground[next][1]);
 		}
 
@@ -110,8 +107,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	canvas.style = "border:3px solid";
 	const ctx = canvas.getContext("2d");
 
-	const fill = "#A9A9A9";
-	const lineWidth = 1.5;
+	fill = "#A9A9A9";
+	border = "black";
+	lineWidth = 1.5;
 
 	const fps = 15;
 	let dirn = -1;
@@ -202,14 +200,14 @@ document.addEventListener('DOMContentLoaded', function(){
 
 			for(let i = 0; i < v.length; ++i)
 			{
-				const next = (i + 1) % v.length;
+				let next = (i + 1) % v.length;
 				let ctrl = v[next];
 				let ratio = 0.475;
 				let ind = i;
-				const e1 = [...v[i]];
-				const e2 = [...v[next]];
-				const gradX = (e1[0] - e2[0]) / -4;
-				const gradY = 10;
+				let e1 = [...v[i]];
+				let e2 = [...v[next]];
+				let gradX = (e1[0] - e2[0]) / -4;
+				let gradY = 10;
 
 				if(i == 0 || i == 2)
 				{
