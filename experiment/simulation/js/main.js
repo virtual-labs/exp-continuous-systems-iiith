@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function(){
 	const playButton = document.getElementById('play');
 	const pauseButton = document.getElementById('pause');
 	const restartButton = document.getElementById('restart');
-	const submitButton = document.getElementById('submit');
 
 	pauseButton.addEventListener('click', function() { window.clearTimeout(tmHandle); });
 	playButton.addEventListener('click', function() {  window.clearTimeout(tmHandle); tmHandle = setTimeout(draw, 1000 / fps); });
@@ -48,6 +47,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	// Update the current slider value (each time you drag the slider handle)
 	slider_hei.oninput = function() {
 		output_hei.innerHTML = this.value;
+		height = Number(document.getElementById("height").value);
+		restart();
 	};
 
 	const slider_mot = document.getElementById("motion");
@@ -57,13 +58,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	// Update the current slider value (each time you drag the slider handle)
 	slider_mot.oninput = function() {
 		output_mot.innerHTML = this.value;
-	};
-
-	submitButton.addEventListener('click', function() {
-		height = Number(document.getElementById("height").value);
 		vibe = Number(document.getElementById("motion").value);
 		restart();
-	});
+	};
 
 	function curvedArea(ctx, e, gradX, gradY)
 	{
