@@ -1,4 +1,8 @@
 /* You CSS goes in here */
+.page {
+	overflow-x: scroll;
+}
+
 #main {
 	width: 85%;
 	height: 85%;
