@@ -6,4 +6,4 @@ Vary the height of the buildings and note the corresponding variations in their 
 
 **Observation 2:**
 
-Vary the ground motion parameter and note the corresponding variations in all the buildings' responses for the dfferent values.
+Vary the ground motion parameter and note the corresponding variations in all the buildings' responses for the different values.
