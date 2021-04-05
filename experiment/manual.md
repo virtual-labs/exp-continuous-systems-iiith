@@ -1,9 +1,9 @@
-Start the experiment with given values of structure and with given earthquake data. Observe the response of structure for different type of profiles.
+Start the experiment with default values of buildings' height and ground motion(amount of vibration). Pause the experiment after a few cycles and observe the response of all the different structures for the same parameters.
 
-**Stage 1:**
+**Observation 1:**
 
-While coming to this stage, user can be able to change behavior of structure and its height. Observe the response of structure with modified parameters.
+Vary the height of the buildings and note the corresponding variations in their responses.
 
-**Stage 2:**
+**Observation 2:**
 
-In this last stage, user will change all the displayed parameters. User can observe the response of structure at different level in its height.
+Vary the ground motion parameter and note the corresponding variations in all the buildings' responses for the dfferent values.
