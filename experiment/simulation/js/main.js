@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		ctx.lineCap = "round";
 		ctx.lineJoin = "round";
 
-		if(dirn == -1)
+		if(dirn === -1)
 		{
 			updateGround(ground, layer2, vibe / scale);
 		}
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		{
 			let v = bldg[k];
 
-			if(dirn == -1)
+			if(dirn === -1)
 			{
 				v[0][0] -= vibe / scale;
 				v[1][0] -= vibe / scale;
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function(){
 				v[3][0] -= vibe / scale;
 			}
 
-			if(k == 2 && (v[0][0] <= upL[k] - vibe || v[1][0] >= upR[k] + vibe))
+			if(k === 2 && (v[0][0] <= upL[k] - vibe || v[1][0] >= upR[k] + vibe))
 			{
 				dirn *= -1;
 			}
@@ -208,30 +208,30 @@ document.addEventListener('DOMContentLoaded', function(){
 				const gradX = (e1[0] - e2[0]) / -4;
 				const gradY = 10;
 
-				if(i == 0 || i == 2)
+				if(i === 0 || i === 2)
 				{
 					curvedArea(ctx, e1, gradX, gradY);
 					continue;
 				}
 
-				if(k == 1)
+				if(k === 1)
 				{
 					ratio = 0.5;
 				}
 
-				if(k == 0 && i == 1)
+				if(k === 0 && i === 1)
 				{
 					ratio = 1 - ratio;
 					ind = next;
 				}
 
-				if((k == 1 || k == 2) && i == 3)
+				if((k === 1 || k === 2) && i === 3)
 				{
 					ratio = 1 - ratio;
 					ind = next;
 				}
 
-				if(i == 1 || i == 3)
+				if(i === 1 || i === 3)
 				{
 					ctrl = [v[ind][0], (v[i][1] + v[next][1]) * ratio];
 					if(k)
