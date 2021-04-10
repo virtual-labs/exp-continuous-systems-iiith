@@ -1,20 +1,15 @@
 //Your JavaScript goes in here
 document.addEventListener('DOMContentLoaded', async function(){
 
-	data = [];
-	await fetch('../groundData1.json')
-		.then(response => response.json())
-		.then(jsonResponse => {data = {...jsonResponse}});
-
 	const playButton = document.getElementById('play');
 	const pauseButton = document.getElementById('pause');
 	const restartButton = document.getElementById('restart');
 
 	pauseButton.addEventListener('click', function() { window.clearTimeout(tmHandle); });
 	playButton.addEventListener('click', function() {  window.clearTimeout(tmHandle); tmHandle = setTimeout(draw, 1000 / fps); });
-	restartButton.addEventListener('click', function() {restart();});
+	restartButton.addEventListener('click', async function() {await restart();});
 
-	function restart() 
+	async function restart() 
 	{ 
 		window.clearTimeout(tmHandle); 
 
@@ -40,6 +35,12 @@ document.addEventListener('DOMContentLoaded', async function(){
 			{...ground[3]},
 		];
 
+		const file = `../data/groundData${dataNum}.json`;
+		await fetch(file)
+			.then(response => response.json())
+			.then(jsonResponse => {data = {...jsonResponse}});
+
+		keys = Object.keys(data);
 		ind = 0;
 		prev = keys.length - 1;
 		tmHandle = window.setTimeout(draw, 1000 / fps); 
@@ -49,20 +50,20 @@ document.addEventListener('DOMContentLoaded', async function(){
 	const output_hei = document.getElementById("demo_height");
 	output_hei.innerHTML = slider_hei.value; // Display the default slider value
 
-	slider_hei.oninput = function() {
+	slider_hei.oninput = async function() {
 		output_hei.innerHTML = this.value;
 		height = Number(document.getElementById("height").value);
-		restart();
+		await restart();
 	};
 
 	const slider_mot = document.getElementById("motion");
 	const output_mot = document.getElementById("demo_motion");
 	output_mot.innerHTML = slider_mot.value; // Display the default slider value
 
-	slider_mot.oninput = function() {
+	slider_mot.oninput = async function() {
 		output_mot.innerHTML = this.value;
-		vibe = Number(document.getElementById("motion").value);
-		restart();
+		dataNum = Number(document.getElementById("motion").value);
+		await restart();
 	};
 
 	function curvedArea(ctx, e, gradX, gradY)
@@ -91,7 +92,13 @@ document.addEventListener('DOMContentLoaded', async function(){
 	}
 
 	let height = 400;
-	let vibe = 30;
+	let dataNum = 1;
+
+	let data = [];
+	const file = `../data/groundData${dataNum}.json`;
+	await fetch(file)
+		.then(response => response.json())
+		.then(jsonResponse => {data = {...jsonResponse}});
 
 	const canvas = document.getElementById("main");
 	canvas.width = 1200;
@@ -103,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async function(){
 	const lineWidth = 1.5;
 
 	const fps = 10;
-	const scale = 20;
+	const scale = 25;
 
 	const defY = 100;
 	const startL = [120, 370, 770];
@@ -115,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async function(){
 	upR[1] = startR[1] - (startR[1] - startL[1]) / 3;
 	upL[2] = startL[2] + (startR[2] - startL[2]) / 3;
 	upR[2] = startR[2] - (startR[2] - startL[2]) / 3;
-	let thickness = 10;
+	const thickness = 10;
 
 	let bldg = [
 		[[upL[0], defY], [upR[0], defY], [startR[0], defY + height], [startL[0], defY + height]],
@@ -139,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async function(){
 		{...ground[3]},
 	];
 
-	keys = Object.keys(data);
+	let keys = Object.keys(data);
 	let ind = 0;
 	let prev = keys.length - 1;
 
@@ -171,8 +178,17 @@ document.addEventListener('DOMContentLoaded', async function(){
 		for(let k = 0; k < 3; ++k)
 		{
 			let v = bldg[k];
-			v[0][0] += scale * 2 * data[keys[prev]];
-			v[1][0] += scale * 2 * data[keys[prev]];
+			if(ind < 100)
+			{
+				v[0][0] += scale * -1 * data[keys[prev]];
+				v[1][0] += scale * -1 * data[keys[prev]];
+			}
+			else
+			{
+				v[0][0] += scale * 2 * data[keys[prev]];
+				v[1][0] += scale * 2 * data[keys[prev]];
+			}
+
 			v[2][0] += scale * data[keys[ind]];
 			v[3][0] += scale * data[keys[ind]];
 
@@ -248,8 +264,17 @@ document.addEventListener('DOMContentLoaded', async function(){
 			ctx.stroke();
 			ctx.restore();
 
-			v[0][0] -= scale * 2 * data[keys[prev]];
-			v[1][0] -= scale * 2 * data[keys[prev]];
+			if(ind < 100)
+			{
+				v[0][0] -= scale * -1 * data[keys[prev]];
+				v[1][0] -= scale * -1 * data[keys[prev]];
+			}
+			else
+			{
+				v[0][0] -= scale * 2 * data[keys[prev]];
+				v[1][0] -= scale * 2 * data[keys[prev]];
+			}
+
 			v[2][0] -= scale * data[keys[ind]];
 			v[3][0] -= scale * data[keys[ind]];
 			bldg[k] = v;
