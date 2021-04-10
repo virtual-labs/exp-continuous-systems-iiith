@@ -1,6 +1,10 @@
 //Your JavaScript goes in here
+document.addEventListener('DOMContentLoaded', async function(){
 
-document.addEventListener('DOMContentLoaded', function(){
+	data = [];
+	await fetch('../groundData1.json')
+		.then(response => response.json())
+		.then(jsonResponse => {data = {...jsonResponse}});
 
 	const playButton = document.getElementById('play');
 	const pauseButton = document.getElementById('pause');
@@ -36,7 +40,8 @@ document.addEventListener('DOMContentLoaded', function(){
 			{...ground[3]},
 		];
 
-		dirn = -1;
+		ind = 0;
+		prev = keys.length - 1;
 		tmHandle = window.setTimeout(draw, 1000 / fps); 
 	}
 
@@ -44,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function(){
 	const output_hei = document.getElementById("demo_height");
 	output_hei.innerHTML = slider_hei.value; // Display the default slider value
 
-	// Update the current slider value (each time you drag the slider handle)
 	slider_hei.oninput = function() {
 		output_hei.innerHTML = this.value;
 		height = Number(document.getElementById("height").value);
@@ -55,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function(){
 	const output_mot = document.getElementById("demo_motion");
 	output_mot.innerHTML = slider_mot.value; // Display the default slider value
 
-	// Update the current slider value (each time you drag the slider handle)
 	slider_mot.oninput = function() {
 		output_mot.innerHTML = this.value;
 		vibe = Number(document.getElementById("motion").value);
@@ -66,17 +69,6 @@ document.addEventListener('DOMContentLoaded', function(){
 	{
 		ctx.bezierCurveTo(e[0], e[1] += gradY, e[0] += gradX, e[1] += gradY, e[0] += gradX, e[1]);
 		ctx.bezierCurveTo(e[0] += gradX, e[1], e[0] += gradX, e[1] -= gradY, e[0], e[1] -= gradY);
-	}
-
-	function updateGround(ground, layer2, chg)
-	{
-		ground.forEach(g => {
-			g[0] += chg;
-		});
-
-		layer2.forEach(l => {
-			l[0] += chg;
-		});
 	}
 
 	function drawGround(ctx, ground)
@@ -110,9 +102,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	const fill = "#A9A9A9";
 	const lineWidth = 1.5;
 
-	const fps = 15;
-	const scale = 5;
-	let dirn = -1;
+	const fps = 10;
+	const scale = 20;
 
 	const defY = 100;
 	const startL = [120, 370, 770];
@@ -148,6 +139,10 @@ document.addEventListener('DOMContentLoaded', function(){
 		{...ground[3]},
 	];
 
+	keys = Object.keys(data);
+	let ind = 0;
+	let prev = keys.length - 1;
+
 	function draw()
 	{
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -156,43 +151,30 @@ document.addEventListener('DOMContentLoaded', function(){
 		ctx.lineCap = "round";
 		ctx.lineJoin = "round";
 
-		if(dirn === -1)
-		{
-			updateGround(ground, layer2, vibe / scale);
-		}
-
-		else
-		{
-			updateGround(ground, layer2, -1 * vibe / scale);
-		}
+		ground.forEach(g => {
+			g[0] += scale * data[keys[ind]];
+		});
+		layer2.forEach(l => {
+			l[0] += scale * data[keys[ind]];
+		});
 
 		drawGround(ctx, ground);
 		drawGround(ctx, layer2);
 
+		ground.forEach(g => {
+			g[0] -= scale * data[keys[ind]];
+		});
+		layer2.forEach(l => {
+			l[0] -= scale * data[keys[ind]];
+		});
+
 		for(let k = 0; k < 3; ++k)
 		{
 			let v = bldg[k];
-
-			if(dirn === -1)
-			{
-				v[0][0] -= vibe / scale;
-				v[1][0] -= vibe / scale;
-				v[2][0] += vibe / scale;
-				v[3][0] += vibe / scale;
-			}
-
-			else
-			{
-				v[0][0] += vibe / scale;
-				v[1][0] += vibe / scale;
-				v[2][0] -= vibe / scale;
-				v[3][0] -= vibe / scale;
-			}
-
-			if(k === 2 && (v[0][0] <= upL[k] - vibe || v[1][0] >= upR[k] + vibe))
-			{
-				dirn *= -1;
-			}
+			v[0][0] += scale * 2 * data[keys[prev]];
+			v[1][0] += scale * 2 * data[keys[prev]];
+			v[2][0] += scale * data[keys[ind]];
+			v[3][0] += scale * data[keys[ind]];
 
 			ctx.beginPath();
 			ctx.moveTo(v[0][0], v[0][1]);
@@ -202,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function(){
 				const next = (i + 1) % v.length;
 				let ctrl = v[next];
 				let ratio = 0.475;
-				let ind = i;
+				let index = i;
 				const e1 = [...v[i]];
 				const e2 = [...v[next]];
 				const gradX = (e1[0] - e2[0]) / -4;
@@ -222,18 +204,18 @@ document.addEventListener('DOMContentLoaded', function(){
 				if(k === 0 && i === 1)
 				{
 					ratio = 1 - ratio;
-					ind = next;
+					index = next;
 				}
 
 				if((k === 1 || k === 2) && i === 3)
 				{
 					ratio = 1 - ratio;
-					ind = next;
+					index = next;
 				}
 
 				if(i === 1 || i === 3)
 				{
-					ctrl = [v[ind][0], (v[i][1] + v[next][1]) * ratio];
+					ctrl = [v[index][0], (v[i][1] + v[next][1]) * ratio];
 					if(k)
 					{
 						ctrl = [(v[next][0] + v[i][0]) * ratio, (v[i][1] + v[next][1]) * ratio];
@@ -266,9 +248,15 @@ document.addEventListener('DOMContentLoaded', function(){
 			ctx.stroke();
 			ctx.restore();
 
+			v[0][0] -= scale * 2 * data[keys[prev]];
+			v[1][0] -= scale * 2 * data[keys[prev]];
+			v[2][0] -= scale * data[keys[ind]];
+			v[3][0] -= scale * data[keys[ind]];
 			bldg[k] = v;
 		}
 
+		ind = (ind + 1) % keys.length;
+		prev = (prev + 1) % keys.length;
 		tmHandle = window.setTimeout(draw, 1000 / fps);
 	}
 
