@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async function(){
 			{...ground[3]},
 		];
 
-		const file = `../data/groundData${dataNum}.json`;
+		const file = `./data/groundData${dataNum}.json`;
 		await fetch(file)
 			.then(response => response.json())
 			.then(jsonResponse => {data = {...jsonResponse}});
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async function(){
 	let dataNum = 1;
 
 	let data = [];
-	const file = `../data/groundData${dataNum}.json`;
+	const file = `./data/groundData${dataNum}.json`;
 	await fetch(file)
 		.then(response => response.json())
 		.then(jsonResponse => {data = {...jsonResponse}});
