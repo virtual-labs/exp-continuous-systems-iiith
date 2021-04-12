@@ -1,4 +1,3 @@
-//Your JavaScript goes in here
 document.addEventListener('DOMContentLoaded', async function(){
 
 	const playButton = document.getElementById('play');
