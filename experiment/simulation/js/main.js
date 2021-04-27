@@ -1,3 +1,5 @@
+'use strict';
+
 document.addEventListener('DOMContentLoaded', function(){
 
 	const playButton = document.getElementById('play');
@@ -235,10 +237,10 @@ document.addEventListener('DOMContentLoaded', function(){
 			// upper curved area
 			ctx.save();
 			ctx.fillStyle = "white";
-			e1 = [...v[1]];
-			e2 = [...v[0]];
-			gradX = (e1[0] - e2[0]) / -4;
-			gradY = 10;
+			const e1 = [...v[1]];
+			const e2 = [...v[0]];
+			const gradX = (e1[0] - e2[0]) / -4;
+			const gradY = 10;
 
 			ctx.beginPath();
 			ctx.moveTo(e2[0], e2[1]);
